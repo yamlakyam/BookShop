@@ -1,9 +1,17 @@
 package com.example.bookshop.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class VolumeInfoData {
+
+    @SerializedName("title")
     private String title;
+
+    @SerializedName("description")
     private String description;
-    private VolumeInfoData volumeInfoData;
+
+    @SerializedName("imageLinks")
+    private ImageLinksData imageLinksData;
 
     public String getTitle() {
         return title;
@@ -13,9 +21,6 @@ public class VolumeInfoData {
         return description;
     }
 
-    public VolumeInfoData getVolumeInfoData() {
-        return volumeInfoData;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -25,8 +30,12 @@ public class VolumeInfoData {
         this.description = description;
     }
 
-    public void setVolumeInfoData(VolumeInfoData volumeInfoData) {
-        this.volumeInfoData = volumeInfoData;
+    public ImageLinksData getImageLinksData() {
+        return imageLinksData;
+    }
+
+    public void setImageLinksData(ImageLinksData imageLinksData) {
+        this.imageLinksData = imageLinksData;
     }
 }
 
