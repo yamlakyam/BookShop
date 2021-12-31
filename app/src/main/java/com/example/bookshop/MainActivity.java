@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TableLayout;
 
 import com.example.bookshop.Adapters.PaginationListAdapter;
 import com.example.bookshop.Api.ApiInterface;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView listView = (ListView) findViewById(R.id.pagination_listview);
+//        TableLayout listView = findViewById(R.id.pagination_tableLayout);
         adapter = new PaginationListAdapter(MainActivity.this, values);
         listView.setAdapter(adapter);
 

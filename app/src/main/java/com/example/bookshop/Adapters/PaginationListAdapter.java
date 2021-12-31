@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,10 +38,13 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
         }
 
         TextView textView = (TextView) row.findViewById(R.id.book_item_title);
+        ImageView imageView = row.findViewById(R.id.book_item_image);
+        TextView bookDesc = row.findViewById(R.id.book_item_desc);
 
         BookItem item = values.get(position);
         String message = item.getTitle();
         textView.setText(message);
+        bookDesc.setText(item.getDescription());
 
         return row;
     }
