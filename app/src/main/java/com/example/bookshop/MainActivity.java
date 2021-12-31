@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 totalBookItems = response.body().getTotalItems();
 
                 for (ItemData repo : response.body().getAllItems()) {
+                    Log.i("TITLE", repo.getVolumeInfoData().getTitle());
                     values.add(new BookItem(repo.getVolumeInfoData().getTitle(),
                             repo.getVolumeInfoData().getDescription(),
                             repo.getVolumeInfoData().getImageLinksData().getThumbnail()));
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         fetchNextPage();
-
                     }
                 });
 
@@ -125,8 +125,11 @@ public class MainActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     totalBookItems = response.body().getTotalItems();
                     for (ItemData repo : response.body().getAllItems()) {
+                        Log.i("title", repo.getVolumeInfoData().getTitle());
+
                         Log.i("ID", repo.getId());
                         Log.i("initialStartingIndex", initialStartingIndex + "");
+
 
                         String imageUrl;
                         if (repo.getVolumeInfoData().getImageLinksData() != null) {
