@@ -14,41 +14,36 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/book_item_image"
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:foregroundGravity="center"
                 tools:srcCompat="@android:drawable/btn_star_big_on" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
 
             <TextView
                 android:id="@+id/book_item_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="TextView" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_marginStart="5dp"
+            android:gravity="center|start">
 
             <TextView
                 android:id="@+id/book_item_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="start"
                 android:text="TextView" />
         </TableRow>
     </TableLayout>

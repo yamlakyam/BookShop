@@ -42,8 +42,7 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
         TextView bookDesc = row.findViewById(R.id.book_item_desc);
 
         BookItem item = values.get(position);
-        String message = item.getTitle();
-        textView.setText(message);
+        textView.setText(item.getTitle());
         bookDesc.setText(item.getDescription());
         imageView.setImageResource(R.drawable.capture);
 
