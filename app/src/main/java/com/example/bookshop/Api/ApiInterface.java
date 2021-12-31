@@ -6,6 +6,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
@@ -13,6 +14,8 @@ public interface ApiInterface {
     @GET("volumes?q=flowers&startIndex=0&maxResults=10")
     Call<AllData> getBookItems();
 
-    @GET("/&startIndex=0")
-    Call<AllData> getBooks(@QueryMap Map<String, String> params);
+    @GET("volumes?q=flowers")
+    Call<AllData> getBooks(
+                           @Query("startIndex") int startIndex,
+                           @Query("maxResults") int maxResults);
 }
