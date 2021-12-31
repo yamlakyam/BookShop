@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.example.bookshop.Models.BookItem;
 import com.example.bookshop.R;
 
@@ -45,6 +46,7 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
         textView.setText(item.getTitle());
         bookDesc.setText(item.getDescription());
         imageView.setImageResource(R.drawable.capture);
+        Glide.with(getContext()).load(item.getImageLink()).into(imageView);
 
         return row;
     }
