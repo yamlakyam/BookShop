@@ -89,33 +89,55 @@ public class MainActivity extends AppCompatActivity {
 //        Call<List<GitHubRepo>> call = service.reposForUserPaginate(next);
 //        call.enqueue(callback);
 
-        if (initialEndingIndex + 10 < totalBookItems) {
-            initialEndingIndex += 10;
-        } else {
-            initialEndingIndex = totalBookItems - 1;
-        }
+//        if (initialEndingIndex + 10 < totalBookItems) {
+//            initialEndingIndex += 10;
+//        } else {
+//            initialEndingIndex = totalBookItems - 1;
+//        }
         if (initialStartingIndex + 10 < totalBookItems) {
             initialStartingIndex += 10;
+        } else {
+            initialStartingIndex = totalBookItems-1;
         }
 
-        Call<AllData> call = apiInterface.getBooks(initialStartingIndex, initialEndingIndex);
+
+        Call<AllData> call = apiInterface.getBooks(initialStartingIndex);
+
+        Log.i("initialStartingIndex", initialStartingIndex + "");
+        Log.i("initialEndingIndex", initialEndingIndex + "");
         call.enqueue(new Callback<AllData>() {
             @Override
             public void onResponse(Call<AllData> call, Response<AllData> response) {
-                for (ItemData repo : response.body().getAllItems()) {
-                    values.add(new BookItem(repo.getVolumeInfoData().getTitle(),
-                            repo.getVolumeInfoData().getDescription(),
-                            repo.getVolumeInfoData().getImageLinksData().getThumbnail()));
+
+                if (response.body() != null) {
+                    totalBookItems = response.body().getTotalItems();
+                    for (ItemData repo : response.body().getAllItems()) {
+                        Log.i("ID", repo.getId());
+                        Log.i("initialStartingIndex", initialStartingIndex + "");
+
+                        String imageUrl;
+                        if (repo.getVolumeInfoData().getImageLinksData() != null) {
+                            imageUrl = repo.getVolumeInfoData().getImageLinksData().getThumbnail();
+                        } else {
+                            imageUrl = "https://cdn5.vectorstock.com/i/1000x1000/59/94/blank-book-cover-perspective-orange-vector-2105994.jpg";
+                        }
+
+                        values.add(new BookItem(
+                                repo.getVolumeInfoData().getTitle(),
+                                repo.getVolumeInfoData().getDescription(), imageUrl));
+
+                    }
+
+                    Log.i("theItems", values + "");
+
+                    adapter.notifyDataSetChanged();
+
+                    Log.i("NOTIFIED", "?: ");
+                    if (initialStartingIndex < totalBookItems) {
+                        fetchNextPage();
+                    }
                 }
 
-                Log.i("theItems", values + "");
-
-                adapter.notifyDataSetChanged();
-
-                Log.i("NOTIFIED", "?: ");
-                if (initialStartingIndex < totalBookItems) {
-                    fetchNextPage();
-                }
             }
 
             @Override

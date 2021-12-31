@@ -16,6 +16,5 @@ public interface ApiInterface {
 
     @GET("volumes?q=flowers")
     Call<AllData> getBooks(
-                           @Query("startIndex") int startIndex,
-                           @Query("maxResults") int maxResults);
+                           @Query("startIndex") int startIndex);
 }
