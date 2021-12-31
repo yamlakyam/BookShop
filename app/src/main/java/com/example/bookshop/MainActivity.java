@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TableLayout;
 
@@ -38,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
     int totalBookItems = 0;
 
+    Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        button = findViewById(R.id.button3);
 
         ListView listView = (ListView) findViewById(R.id.pagination_listview);
 //        TableLayout listView = findViewById(R.id.pagination_tableLayout);
@@ -65,7 +70,13 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged();
-                fetchNextPage();
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fetchNextPage();
+
+                    }
+                });
 
             }
 
@@ -99,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         if (initialStartingIndex + 10 < totalBookItems) {
             initialStartingIndex += 10;
         } else {
-            initialStartingIndex = totalBookItems-1;
+            initialStartingIndex = totalBookItems - 1;
         }
 
 
@@ -135,9 +146,15 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 
                     Log.i("NOTIFIED", "?: ");
-                    if (initialStartingIndex < totalBookItems) {
-                        fetchNextPage();
-                    }
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (initialStartingIndex < totalBookItems) {
+                                fetchNextPage();
+                            }
+                        }
+                    });
+
                 }
 
             }
