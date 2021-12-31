@@ -1,6 +1,7 @@
 package com.example.bookshop.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.example.bookshop.BookDetailActivity;
 import com.example.bookshop.Models.BookItem;
 import com.example.bookshop.R;
 
@@ -38,7 +42,8 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
             row = inflater.inflate(R.layout.book_tem_pagination, parent, false);
         }
 
-        TextView textView = (TextView) row.findViewById(R.id.book_item_title);
+        CardView cardView = row.findViewById(R.id.bookCard);
+        TextView textView = row.findViewById(R.id.book_item_title);
         ImageView imageView = row.findViewById(R.id.book_item_image);
         TextView bookDesc = row.findViewById(R.id.book_item_desc);
 
@@ -47,6 +52,16 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
         bookDesc.setText(item.getDescription());
         imageView.setImageResource(R.drawable.capture);
         Glide.with(getContext()).load(item.getImageLink()).into(imageView);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), BookDetailActivity.class);
+                intent.putExtra("DESC",item.getDescription());
+                intent.putExtra("TITLE",item.getDescription());
+                context.startActivity(intent);
+            }
+        });
 
         return row;
     }

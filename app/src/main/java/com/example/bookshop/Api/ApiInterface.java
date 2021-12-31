@@ -12,9 +12,9 @@ import retrofit2.http.QueryMap;
 public interface ApiInterface {
 
     @GET("volumes?q=flowers&startIndex=0&maxResults=10")
-    Call<AllData> getBookItems();
+    Call<AllData> getInitialBookItems();
 
     @GET("volumes?q=flowers")
-    Call<AllData> getBooks(
-                           @Query("startIndex") int startIndex);
+    Call<AllData> getNextBookItems(
+            @Query("startIndex") int startIndex);
 }

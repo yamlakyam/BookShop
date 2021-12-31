@@ -3,11 +3,10 @@ package com.example.bookshop;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.example.bookshop.Adapters.PaginationListAdapter;
 import com.example.bookshop.Api.ApiInterface;
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
     ApiInterface apiInterface = retrofit.create(ApiInterface.class);
-    Call<AllData> call = apiInterface.getBookItems();
 
     private PaginationListAdapter adapter;
     private List<BookItem> values = new ArrayList<>();
@@ -54,22 +52,14 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PaginationListAdapter(MainActivity.this, values);
         listView.setAdapter(adapter);
 
-
+        Call<AllData> call = apiInterface.getInitialBookItems();
         call.enqueue(new Callback<AllData>() {
             @Override
             public void onResponse(Call<AllData> call, Response<AllData> response) {
-                Log.i("items", response.body().getTotalItems() + "");
-                Log.i("Reponse", response.body().getAllItems().get(0).getVolumeInfoData().getDescription() + "");
 
                 totalBookItems = response.body().getTotalItems();
 
-                for (ItemData repo : response.body().getAllItems()) {
-                    Log.i("TITLE", repo.getVolumeInfoData().getTitle());
-                    values.add(new BookItem(repo.getVolumeInfoData().getTitle(),
-                            repo.getVolumeInfoData().getDescription(),
-                            repo.getVolumeInfoData().getImageLinksData().getThumbnail()));
-                }
-
+                addBookItems(response);
                 adapter.notifyDataSetChanged();
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -89,24 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void fetchNextPage() {
-//        GitHubPagelinksUtils pagelinksUtils =
-//                new GitHubPagelinksUtils(response.headers());
-//        String next = pagelinksUtils.getNext();
-//
-//        Log.d("Header", response.headers().get("Link"));
-//
-//        if (TextUtils.isEmpty(next)) {
-//            return; // nothing to do
-//        }
-//
-//        Call<List<GitHubRepo>> call = service.reposForUserPaginate(next);
-//        call.enqueue(callback);
-
-//        if (initialEndingIndex + 10 < totalBookItems) {
-//            initialEndingIndex += 10;
-//        } else {
-//            initialEndingIndex = totalBookItems - 1;
-//        }
         if (initialStartingIndex + 10 < totalBookItems) {
             initialStartingIndex += 10;
         } else {
@@ -114,41 +86,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Call<AllData> call = apiInterface.getBooks(initialStartingIndex);
-
-        Log.i("initialStartingIndex", initialStartingIndex + "");
-        Log.i("initialEndingIndex", initialEndingIndex + "");
+        Call<AllData> call = apiInterface.getNextBookItems(initialStartingIndex);
         call.enqueue(new Callback<AllData>() {
             @Override
             public void onResponse(Call<AllData> call, Response<AllData> response) {
 
                 if (response.body() != null) {
                     totalBookItems = response.body().getTotalItems();
-                    for (ItemData repo : response.body().getAllItems()) {
-                        Log.i("title", repo.getVolumeInfoData().getTitle());
 
-                        Log.i("ID", repo.getId());
-                        Log.i("initialStartingIndex", initialStartingIndex + "");
-
-
-                        String imageUrl;
-                        if (repo.getVolumeInfoData().getImageLinksData() != null) {
-                            imageUrl = repo.getVolumeInfoData().getImageLinksData().getThumbnail();
-                        } else {
-                            imageUrl = "https://cdn5.vectorstock.com/i/1000x1000/59/94/blank-book-cover-perspective-orange-vector-2105994.jpg";
-                        }
-
-                        values.add(new BookItem(
-                                repo.getVolumeInfoData().getTitle(),
-                                repo.getVolumeInfoData().getDescription(), imageUrl));
-
-                    }
-
-                    Log.i("theItems", values + "");
-
+                    addBookItems(response);
                     adapter.notifyDataSetChanged();
-
-                    Log.i("NOTIFIED", "?: ");
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -164,8 +111,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AllData> call, Throwable t) {
-
+                Toast.makeText(MainActivity.this, "Check your Network Connection!",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void addBookItems(Response<AllData> response){
+        for (ItemData repo : response.body().getAllItems()) {
+            String imageUrl;
+            if (repo.getVolumeInfoData().getImageLinksData() != null) {
+                imageUrl = repo.getVolumeInfoData().getImageLinksData().getThumbnail();
+            } else {
+                imageUrl = "https://cdn5.vectorstock.com/i/1000x1000/59/94/blank-book-cover-perspective-orange-vector-2105994.jpg";
+            }
+
+            values.add(new BookItem(
+                    repo.getVolumeInfoData().getTitle(),
+                    repo.getVolumeInfoData().getDescription(), imageUrl));
+
+        }
     }
 }
