@@ -58,7 +58,7 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), BookDetailActivity.class);
                 intent.putExtra("DESC",item.getDescription());
-                intent.putExtra("TITLE",item.getDescription());
+                intent.putExtra("TITLE",item.getTitle());
                 context.startActivity(intent);
             }
         });
