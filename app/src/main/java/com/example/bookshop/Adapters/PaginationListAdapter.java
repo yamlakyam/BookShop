@@ -2,6 +2,7 @@ package com.example.bookshop.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,16 +50,21 @@ public class PaginationListAdapter extends ArrayAdapter<BookItem> {
 
         BookItem item = values.get(position);
         textView.setText(item.getTitle());
-        bookDesc.setText(item.getDescription());
-        imageView.setImageResource(R.drawable.capture);
-        Glide.with(getContext()).load(item.getImageLink()).into(imageView);
+//        bookDesc.setText(item.getDescription());
+//        imageView.setImageResource(R.drawable.capture);
+
+        Log.i("before ", "glide ");
+//        Glide.with(getContext()).load(item.getImageLink()).error(R.drawable.books).into(imageView);
+        Glide.with(getContext()).load(item.getImageLink()).error(R.drawable.books).into(imageView);
+        Log.i("after ", "glide ");
+
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), BookDetailActivity.class);
-                intent.putExtra("DESC",item.getDescription());
-                intent.putExtra("TITLE",item.getTitle());
+                intent.putExtra("DESC", item.getDescription());
+                intent.putExtra("TITLE", item.getTitle());
                 context.startActivity(intent);
             }
         });

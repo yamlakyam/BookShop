@@ -2,10 +2,16 @@ package com.example.bookshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookshop.Adapters.PaginationListAdapter;
@@ -40,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
     Button button;
 
+    GridView gridLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.button3);
+        gridLayout = findViewById(R.id.gridLayout);
 
         ListView listView = (ListView) findViewById(R.id.pagination_listview);
 //        TableLayout listView = findViewById(R.id.pagination_tableLayout);
@@ -58,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<AllData> call, Response<AllData> response) {
 
                 totalBookItems = response.body().getTotalItems();
+
+
+//                drawGridLayout(response);
 
                 addBookItems(response);
                 adapter.notifyDataSetChanged();
@@ -111,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AllData> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Check your Network Connection!",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Check your Network Connection!", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public void addBookItems(Response<AllData> response){
+    public void addBookItems(Response<AllData> response) {
         for (ItemData repo : response.body().getAllItems()) {
             String imageUrl;
             if (repo.getVolumeInfoData().getImageLinksData() != null) {
@@ -130,5 +142,25 @@ public class MainActivity extends AppCompatActivity {
                     repo.getVolumeInfoData().getDescription(), imageUrl));
 
         }
+    }
+
+    public void drawGridLayout(Response<AllData> response) {
+        for (int i = 0; i < response.body().getAllItems().size(); i++) {
+
+
+            ItemData itemData = response.body().getAllItems().get(i);
+
+            LayoutInflater courseCardInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View cardElementView = courseCardInflater.inflate(R.layout.grid_element, null, false);
+
+            ImageView imageBook = cardElementView.findViewById(R.id.imageBook);
+            TextView titleBook = cardElementView.findViewById(R.id.titleBook);
+
+            titleBook.setText(itemData.getVolumeInfoData().getTitle());
+
+            gridLayout.addView(cardElementView);
+        }
+
+
     }
 }
